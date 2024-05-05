@@ -2,7 +2,7 @@
 <br>
 <p align="center">
   <a href="https://github.com/abhishekapk/SMART-PARKING-SYSTEM">
-    <img src="https://storage.googleapis.com/cdn.media.bluedot.so/bluedot.techsnack/2022/07/%EC%95%84%EB%A7%88%EC%A1%B4_%EB%8C%80%EC%8B%9C%EC%B9%B4%ED%8A%B8_%ED%99%80%ED%91%B8%EB%93%9C.JPG" alt="Logo" width="auto" height="auto">
+    <img src="https://github.com/StealthBlack66/Smart_shopping/blob/main/image/%EC%95%84%EB%A7%88%EC%A1%B4_%EB%8C%80%EC%8B%9C%EC%B9%B4%ED%8A%B8_%ED%99%80%ED%91%B8%EB%93%9C.JPG" alt="Logo" width="auto" height="auto">
   </a></p>
 <br>
 <h2>개요</h2>
