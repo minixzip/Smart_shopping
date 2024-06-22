@@ -22,10 +22,16 @@
  - 파이카메라 : 상품 인식
  - 라즈베리파이 : 메인 서버와 카트의 통신 담당
  - 무게 센서 : 상품들의 무게 측정
+ - 터치스크린 : 카트에 담은 상품 목록을 보여줌, 결제가 이뤄짐
 
 동작순서는 다음과 같다. 
 
-쇼핑카트와 본인의 스마트폰 연결 -- 상품을 담거나 빼면 초음파 센서가이를 인식 해서 현재 화면을 라즈베리파이에 저장 -- 신호를 받은 서베에서 라즈베리파이의 화면을 읽어온다 -- 인공지능을 이용해 카트 현황(상품의 종류 및 수량)을 판단 -- 판단 내용을 안드로이드 앱으로 전달 -- 앱의 장바구니를 해당 데이터에 따라 수정 -- 쇼핑이 끝나면 안드로이드 앱을 통해 결제
+1. 터치스크린의 시작 버튼 누르기
+2. 상품을 담거나 빼면 초음파 센서가 이를 인식 해서 현재 화면을 라즈베리파이에 저장 
+3. 라즈베리파이에 담은 인공지능 모델을 이용해 카트 현황(상품의 종류 및 수량)을 판단 
+4. 판단 내용을 바탕으로 주문내역 구성 
+5. 터치스크린에서 이를 보여줌  
+6. 쇼핑이 끝나면 터치스크린을 통해 결제
  
  </p>
 <br>
@@ -65,7 +71,7 @@ YOLO-mark를 이용해 학습데이터 리사이징과 라벨링 등의 전처�
 <br>
 <p align="center">
   <a href="">
-    <img src="https://github.com/StealthBlack66/Smart_shopping/blob/main/image/System Diagram.png" alt="Algorithm" width="auto" height="auto">
+    <img src="https://github.com/StealthBlack66/Smart_shopping/blob/main/image/졸작 알고리즘.png" alt="Algorithm" width="auto" height="auto">
   </a></p>
 <br>
 <h2>사용 모듈</h2>
