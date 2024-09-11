@@ -97,7 +97,7 @@ def run(
     half=False,  # use FP16 half-precision inference
     dnn=False,  # use OpenCV DNN for ONNX inference
     vid_stride=1,  # video frame-rate stride
-    max_frames=10  # <-- 프레임 수 제한 추가
+    max_frames=5  # <-- 프레임 수 제한 추가
 ):
     """
     Runs YOLOv5 detection inference on various sources like images, videos, directories, streams, etc.
@@ -225,9 +225,9 @@ def run(
         csv_path = save_dir / "predictions.csv"
 
         # Create or append to the CSV file
-        def write_to_csv(image_name, prediction, confidence):
+        def write_to_csv(frame_count, label, n, confidence):
             """Writes prediction data for an image to a CSV file, appending if the file exists."""
-            data = {"Image Name": image_name, "Prediction": prediction, "Confidence": confidence}
+            data = {"Frame Count": frame_count, "Label": label, "Object Count": n, "Confidence": confidence}
             with open(csv_path, mode="a", newline="") as f:
                 writer = csv.DictWriter(f, fieldnames=data.keys())
                 if not csv_path.is_file():
@@ -267,7 +267,7 @@ def run(
                     confidence_str = f"{confidence:.2f}"
 
                     if save_csv:
-                        write_to_csv(p.name, label, confidence_str)
+                        write_to_csv(frame_count, label, n.item(), confidence_str)
 
                     if save_txt:  # Write to file
                         if save_format == 0:
@@ -445,5 +445,5 @@ if __name__ == "__main__":
     opt = parse_opt()
     opt.save_csv = True
     opt.nosave = True
-    opt.imgsz = 240
+    opt.imgsz = (240,240)
     main(opt)
