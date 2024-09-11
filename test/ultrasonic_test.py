@@ -1,48 +1,39 @@
-#!/usr/bin/env python
 import RPi.GPIO as GPIO
-import time
 import time
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-# 초음파 센서 GPIO 핀 설정
-TRIG_PINS = [2, 5, 7]
-ECHO_PINS = [3, 6, 8]
-result = [500,500,500]
-print('초음파 거리 측정')
+TRIG = 2
+ECHO = 3
+print("초음파 거리 측정기")
 
-for i in range(3):
-    GPIO.setup(TRIG_PINS[i], GPIO.OUT)
-    GPIO.setup(ECHO_PINS[i], GPIO.IN)
-    GPIO.output(TRIG_PINS[i], GPIO.LOW)
+GPIO.setup(TRIG, GPIO.OUT)
+GPIO.setup(ECHO, GPIO.IN)
 
-def get_distance(num):
-    GPIO.output(TRIG_PINS[num], False)
-    print('초음파 출력 초기화')
-    time.sleep(0.01)
-    GPIO.output(TRIG_PINS[num], True)
-    time.sleep(0.00001)
-    GPIO.output(TRIG_PINS[num], False)
-    
-    while GPIO.input(ECHO_PINS[num]) == 0:
-        start_time = time.time()
-    
-    while GPIO.input(ECHO_PINS[num]) == 1:
-        stop_time = time.time()
-    
-    time_elapsed = stop_time - start_time
-    dis = round(time_elapsed*17000,2)
-    
+GPIO.output(TRIG, False)
+print("초음파 출력 초기화")
+time.sleep(2)
+
 try:
     while True:
-        for i in range(3):
-            result[i] = get_distance(i)
-            
-            if result[i]<30 and result[i] >=3:
-                print(f'센서{i+1} 거리는 {result[i]}cm')
+        GPIO.output(TRIG,True)
+        time.sleep(0.00001)        # 10uS의 펄스 발생을 위한 딜레이
+        GPIO.output(TRIG, False)
         
+        while GPIO.input(ECHO)==0:
+            start = time.time()     # Echo핀 상승 시간값 저장
+            
+        while GPIO.input(ECHO)==1:
+            stop = time.time()      # Echo핀 하강 시간값 저장
+            
+        check_time = stop - start
+        distance = check_time * 34300 / 2
+        print("Distance : %.1f cm" % distance)
+        time.sleep(0.4)
         
 except KeyboardInterrupt:
-    print('거리 측정 완료')
-    GPIO.cleanup()
+    print("거리 측정 완료 ")
+    GPIO.cleanup()      
+        
+

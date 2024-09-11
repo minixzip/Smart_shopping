@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import time
 
 # 무게 센서 GPIO 핀 설정
+GPIO.setmode(GPIO.BSD)
 DT = 17
 SCK = 27
 sample=0
