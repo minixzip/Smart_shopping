@@ -69,7 +69,7 @@ def main():
     
     # mjpeg_server_2.py 실행
     print("mjpeg_server_2.py loading...")
-    mjpeg_server_proc = subprocess.Popen(["python", "~/mjpeg_server_2.py"])
+    mjpeg_server_proc = subprocess.Popen(["python", "/home/khung/mjpeg_server_2.py"])
 
     try:
         while True:
@@ -80,7 +80,7 @@ def main():
             if 3 <= distance <= 30:
                 # YOLOv5 탐지 결과 디렉토리 삭제
                 print("initing detect exp...")
-                subprocess.run(["rm", "-rf", "~/yolov5/runs/detect/exp/"], check=True)
+                subprocess.run(["rm", "-rf", "/home/khung/yolov5/runs/detect/"], check=True)
                 
                 # cart.php 실행
                 print("cart.php loading...")
@@ -88,9 +88,9 @@ def main():
                 
                 # yolov5 탐지 실행
                 print("YOLOv5 detecting...")
-                subprocess.run(["python3", "~/yolov5/detect_new.py", 
+                subprocess.run(["python3", "/home/khung/yolov5/detect_new.py", 
                                 "--source", "http://localhost:8000/stream.mjpg", 
-                                "--weights", "~/yolov5/cart_best.pt", 
+                                "--weights", "/home/khung/yolov5/cart_best.pt", 
                                 "--conf", "0.25"], check=True)
                 
             
