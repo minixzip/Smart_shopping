@@ -1,5 +1,5 @@
 <?php
-$hostname = "127.0.0.1:3307";
+$hostname = "172.30.1.32:3306";
 $username = "root";
 $password = "0000";
 
@@ -31,7 +31,7 @@ function getProduct($conn, $item_num) {
 // item_num에 따라 해당하는 행의 마지막 열(7열)을 1 증가시키는 함수
 function incrementLastColumn($conn, $item_num) {
     // item_num에 해당하는 행의 마지막 열을 1 증가시키는 쿼리
-    $updateSql = "UPDATE item SET COLUMN_7 = COLUMN_7 + 1 WHERE NUMBER = $item_num";
+    $updateSql = "UPDATE item SET count = count + 1 WHERE NUMBER = $item_num";
     mysqli_query($conn, $updateSql);
 }
 
@@ -96,15 +96,16 @@ function processCSV($file, $conn) {
 }
 
 // 서버 내 경로에 있는 CSV 파일을 불러오는 코드
-$csvFilePath = "/home/username/yolov5/runs/detect/exp"; // 경로 설정 (절대 경로 사용)
+$csvFilePath = "/home/khung/yolov5/runs/detect/exp"; // 경로 설정 (절대 경로 사용)
 $csvFileName = "cart_items.csv"; // 파일 이름 설정
 $csvFileFullPath = $csvFilePath . '/' . $csvFileName; // 파일 전체 경로 생성
 
+// echo $csvFileFullPath;
 $csvData = array();
 if (file_exists($csvFileFullPath)) { // 경로에 파일이 존재하는지 확인
     $csvData = processCSV($csvFileFullPath, $conn); // 파일이 존재하면 처리
 } else {
-    echo "CSV 파일을 찾을 수 없습니다.";
+    echo "Dosen't find file CSV.";
 }
 
 // 첫 번째 열의 값이 5인 행에서 2번째와 3번째 열을 불러오기
@@ -118,23 +119,23 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장바구니</title>
+    <title>Cart</title>
     <style>
         /* 스타일 동일, 생략 */
     </style>
 </head>
 <body>
     <header>
-        <h1>장바구니</h1>
+        <h1>Cart</h1>
     </header>
     <main>
         <div class="cart-container">
             <div id="cart-items"></div>
 
             <div class="cart-total">
-                합계 금액: <span id="cart-total">0</span> 원
+                Total: <span id="cart-total">0</span> £
             </div>
-            <button class="checkout-btn" onclick="checkout()">결제하기</button>
+            <button class="checkout-btn" onclick="checkout()">Order</button>
 
             <!-- CSV 파일이 서버 경로에서 자동으로 로드되므로, 업로드 폼을 제거 -->
         </div>
@@ -198,7 +199,7 @@ $conn->close();
                             <button onclick="changeQuantity(${item.number}, 1)">+</button>
                         </div>
                     </div>
-                    <div class="cart-item-price">${itemTotal} 원</div>
+                    <div class="cart-item-price">${itemTotal} £</div>
                 `;
 
                 cartItemsContainer.appendChild(cartItem);
@@ -209,7 +210,7 @@ $conn->close();
 
         // 결제하기 버튼
         function checkout() {
-            alert(`총 결제 금액은 ${document.getElementById('cart-total').textContent} 원입니다.`);
+            alert(`Merchandise Total is ${document.getElementById('cart-total').textContent} £.`);
         }
 
         // 서버 경로에서 불러온 상품을 장바구니에 추가
