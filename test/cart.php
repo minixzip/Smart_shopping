@@ -136,7 +136,98 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
     <style>
-        /* 스타일 동일, 생략 */
+        /* 동일한 스타일 적용 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+        main {
+            padding: 2em;
+        }
+        .cart-container {
+            background-color: white;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f9f9f9;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .cart-item img {
+            width: 60px;
+            height: auto;
+            margin-right: 1em;
+        }
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+        .cart-item-name {
+            font-size: 1.2em;
+            margin-right: 2em; 
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .quantity-controls button {
+            padding: 0.5em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 0 0.5em;
+        }
+        .quantity-controls button:hover {
+            background-color: #45a049;
+        }
+        .cart-item-price {
+            font-weight: bold;
+            color: #333;
+            margin-left: 1em;
+            margin-right: 1em;
+            width: 100px;
+            text-align: right;
+        }
+        .cart-total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1em;
+        }
+        .checkout-btn {
+            width: 100%;
+            padding: 1em;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 1em;
+            text-align: center;
+            border-radius: 10px;
+        }
+        .checkout-btn:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 <body>
