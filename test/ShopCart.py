@@ -73,6 +73,10 @@ def main():
             
             # 3~30cm 이내에 물체가 감지되면
             if 3 <= distance <= 30:
+                # YOLOv5 탐지 결과 디렉토리 삭제
+                print("탐지 결과 디렉토리 삭제 중...")
+                os.system("rm -rf ~/yolov5/runs/detect/exp/")
+                
                 # cart.php 실행
                 print("cart.php 실행 중...")
                 requests.get('http://localhost/cart.php')
@@ -85,27 +89,22 @@ def main():
                 print("YOLOv5 탐지 중...")
                 os.system("python3 ~/yolov5/detect_new.py --source http://localhost:8000/stream.mjpg --weights cart_best.pt --conf 0.25 &")
                 
-                # YOLOv5 탐지 결과 디렉토리 삭제
-                print("탐지 결과 디렉토리 삭제 중...")
-                os.system("rm -rf ~/yolov5/runs/detect/exp/")
+            
             
             # 무게 변화 감지
-            weight = get_weight()
-            weight_difference = abs((sample - weight) / 106) - pre_weight
+            # weight = get_weight()
+            # weight_difference = abs((sample - weight) / 106) - pre_weight
             
-            if abs(weight_difference) > 50:  # 50g 이상의 무게 변화 감지
-                print(f"무게 변화 감지됨: {weight_difference} g")
+            # if abs(weight_difference) > 50:  # 50g 이상의 무게 변화 감지
+                # print(f"무게 변화 감지됨: {weight_difference} g")
                 
                 # cart.php 새로고침
                 print("cart.php 새로고침 중...")
                 requests.get('http://localhost/cart.php')
                 
-                # YOLOv5 탐지 결과 디렉토리 삭제
-                print("탐지 결과 디렉토리 삭제 중...")
-                os.system("rm -rf ~/yolov5/runs/detect/exp/")
                 
                 # 무게 업데이트
-                pre_weight = weight_difference
+                # pre_weight = weight_difference
             
             time.sleep(1)  # 1초 대기
 
