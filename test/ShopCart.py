@@ -71,6 +71,10 @@ def main():
     print("mjpeg_server_2.py loading...")
     mjpeg_server_proc = subprocess.Popen(["x-terminal-emulator", "-e", "python /home/khung/mjpeg_server_2.py"],
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    # cart.php 실행
+    print("cart.php loading...")
+    subprocess.run(["xdg-open", "http://localhost/cart.php"])
 
     try:
         while True:
@@ -82,10 +86,7 @@ def main():
                 # YOLOv5 탐지 결과 디렉토리 삭제
                 print("initing detect exp...")
                 subprocess.run(["rm", "-rf", "/home/khung/yolov5/runs/detect/"], check=True)
-                
-                # cart.php 실행
-                print("cart.php loading...")
-                subprocess.run(["xdg-open", "http://localhost/cart.php"])
+            
                 
                 # yolov5 탐지 실행
                 print("YOLOv5 detecting...")
