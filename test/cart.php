@@ -148,7 +148,7 @@ $conn->close();
             <div id="cart-items"></div>
 
             <div class="cart-total">
-                Total: <span id="cart-total">0</span> \
+                Total: <span id="cart-total">0</span> ₩
             </div>
             <button class="checkout-btn" onclick="checkout()">Order</button>
 
@@ -214,7 +214,7 @@ $conn->close();
                             <button onclick="changeQuantity(${item.number}, 1)">+</button>
                         </div>
                     </div>
-                    <div class="cart-item-price">${itemTotal} \</div>
+                    <div class="cart-item-price">${itemTotal} ₩</div>
                 `;
 
                 cartItemsContainer.appendChild(cartItem);
@@ -225,7 +225,7 @@ $conn->close();
 
         // 결제하기 버튼
         function checkout() {
-            alert(`Merchandise Total is ${document.getElementById('cart-total').textContent} \.`);
+            alert(`Merchandise Total is ${document.getElementById('cart-total').textContent} ₩.`);
         }
 
         // 서버 경로에서 불러온 상품을 장바구니에 추가
