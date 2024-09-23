@@ -4,8 +4,8 @@ import time
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-TRIG = 2
-ECHO = 3
+TRIG = 2  #초록
+ECHO = 3  #노랑
 print("초음파 거리 측정기")
 
 GPIO.setup(TRIG, GPIO.OUT)

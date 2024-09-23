@@ -28,16 +28,17 @@ function getProduct($conn, $item_num) {
     return $res_row;
 }
 
-// item_num에 따라 해당하는 행의 마지막 열(7열)을 1 증가시키는 함수
-function incrementLastColumn($conn, $item_num) {
-    // item_num에 해당하는 행의 마지막 열을 1 증가시키는 쿼리
-    $updateSql = "UPDATE item SET count = count + 1 WHERE NUMBER = $item_num";
+// item_num에 따라 해당하는 행의 마지막 열을 세 번째 열의 값만큼 증가시키는 함수
+function incrementLastColumn($conn, $item_num, $incrementValue) {
+    // item_num에 해당하는 행의 마지막 열을 incrementValue만큼 증가시키는 쿼리
+    $updateSql = "UPDATE item SET count = count + $incrementValue WHERE NUMBER = $item_num";
     mysqli_query($conn, $updateSql);
 }
 
 // CSV 파일에서 첫 번째 열의 값이 5인 행을 찾아 2번째, 3번째 열 값을 불러오고, item_num 값을 조건에 따라 설정하는 함수
 function getSpecificRows($file) {
     $specificData = array(); // 결과를 저장할 배열
+    $existingItemNums = array(); // 중복 체크를 위한 배열
 
     // CSV 파일을 열기
     if (($handle = fopen($file, "r")) !== FALSE) {
@@ -56,12 +57,13 @@ function getSpecificRows($file) {
                 }
 
                 // item_num이 설정된 경우, 데이터를 배열에 추가
-                if ($item_num !== null) {
+                if ($item_num !== null && !in_array($item_num, $existingItemNums)) {
                     $specificData[] = array(
                         'item_num' => $item_num,   // 설정된 item_num
                         'column2' => $data[1],     // 두 번째 열
                         'column3' => $data[2]      // 세 번째 열
                     );
+                    $existingItemNums[] = $item_num; // 중복 체크를 위해 추가
                 }
             }
         }
@@ -76,18 +78,31 @@ function processCSV($file, $conn) {
     $csvData = array();
     if (($handle = fopen($file, "r")) !== FALSE) { // 파일을 열고 읽기 모드로 핸들러 생성
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) { // 한 줄씩 CSV 파일을 읽음
-            // CSV에서 item_num 값을 가져와 DB에서 상품 정보 불러오기
-            $item_num = $data[0];  // 첫 번째 열이 item_num이라고 가정
-            $product = getProduct($conn, $item_num);
-            
-            // item_num에 해당하는 행의 마지막 열 증가
-            if (in_array($item_num, [1, 2, 3])) {
-                incrementLastColumn($conn, $item_num);
-            }
+            // 첫 번째 열의 값이 5인지 확인
+            if ($data[0] == '5') {
+                // item_num 값을 조건에 따라 설정
+                $item_num = null;
+                if ($data[1] == 'ramen') {
+                    $item_num = 3; // ramen일 경우 3
+                } elseif ($data[1] == 'cocacola') {
+                    $item_num = 2; // cocacola일 경우 2
+                } elseif ($data[1] == 'cancho') {
+                    $item_num = 1; // cancho일 경우 1
+                }
 
-            // 불러온 상품 정보를 배열에 추가
-            if (!empty($product)) {
-                array_push($csvData, $product[0]); // getProduct는 배열을 반환하므로 [0]으로 접근
+                // item_num이 설정된 경우, DB에서 상품 정보 불러오기
+                if ($item_num !== null) {
+                    $product = getProduct($conn, $item_num);
+                    
+                    // 세 번째 열의 값만큼 마지막 열을 증가
+                    $incrementValue = (int)$data[2]; // 세 번째 열의 값을 정수로 변환
+                    incrementLastColumn($conn, $item_num, $incrementValue);
+                    
+                    // 불러온 상품 정보를 배열에 추가
+                    if (!empty($product)) {
+                        array_push($csvData, $product[0]); // getProduct는 배열을 반환하므로 [0]으로 접근
+                    }
+                }
             }
         }
         fclose($handle); // 파일 닫기
@@ -133,7 +148,7 @@ $conn->close();
             <div id="cart-items"></div>
 
             <div class="cart-total">
-                Total: <span id="cart-total">0</span> £
+                Total: <span id="cart-total">0</span> \
             </div>
             <button class="checkout-btn" onclick="checkout()">Order</button>
 
@@ -199,7 +214,7 @@ $conn->close();
                             <button onclick="changeQuantity(${item.number}, 1)">+</button>
                         </div>
                     </div>
-                    <div class="cart-item-price">${itemTotal} £</div>
+                    <div class="cart-item-price">${itemTotal} \</div>
                 `;
 
                 cartItemsContainer.appendChild(cartItem);
@@ -210,7 +225,7 @@ $conn->close();
 
         // 결제하기 버튼
         function checkout() {
-            alert(`Merchandise Total is ${document.getElementById('cart-total').textContent} £.`);
+            alert(`Merchandise Total is ${document.getElementById('cart-total').textContent} \.`);
         }
 
         // 서버 경로에서 불러온 상품을 장바구니에 추가
