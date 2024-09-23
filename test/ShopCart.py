@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import os
 import requests
+import subprocess
 
 # GPIO 설정
 GPIO.setmode(GPIO.BCM)
@@ -65,6 +66,10 @@ def measure_distance():
 # 메인 함수
 def main():
     global pre_weight
+    
+    # mjpeg_server_2.py 실행
+    print("mjpeg_server_2.py loading...")
+    mjpeg_server_proc = subprocess.Popen(["python", "~/mjpeg_server_2.py"])
 
     try:
         while True:
@@ -74,20 +79,19 @@ def main():
             # 3~30cm 이내에 물체가 감지되면
             if 3 <= distance <= 30:
                 # YOLOv5 탐지 결과 디렉토리 삭제
-                print("탐지 결과 디렉토리 삭제 중...")
-                os.system("rm -rf ~/yolov5/runs/detect/exp/")
+                print("initing detect exp...")
+                subprocess.run(["rm", "-rf", "~/yolov5/runs/detect/exp/"], check=True)
                 
                 # cart.php 실행
-                print("cart.php 실행 중...")
-                requests.get('http://localhost/cart.php')
-                
-                # python mjpeg_server_2.py 실행
-                print("mjpeg_server_2.py 실행 중...")
-                os.system("python ~/mjpeg_server_2.py &")
+                print("cart.php loading...")
+                subprocess.run(["xdg-open", "http://localhost/cart.php"])
                 
                 # yolov5 탐지 실행
-                print("YOLOv5 탐지 중...")
-                os.system("python3 ~/yolov5/detect_new.py --source http://localhost:8000/stream.mjpg --weights cart_best.pt --conf 0.25 &")
+                print("YOLOv5 detecting...")
+                subprocess.run(["python3", "~/yolov5/detect_new.py", 
+                                "--source", "http://localhost:8000/stream.mjpg", 
+                                "--weights", "~/yolov5/cart_best.pt", 
+                                "--conf", "0.25"], check=True)
                 
             
             
@@ -99,8 +103,8 @@ def main():
                 # print(f"무게 변화 감지됨: {weight_difference} g")
                 
                 # cart.php 새로고침
-                print("cart.php 새로고침 중...")
-                requests.get('http://localhost/cart.php')
+                print("cart.php reloading")
+                subprocess.run(["xdg-open", "http://localhost/cart.php"])
                 
                 
                 # 무게 업데이트
@@ -109,7 +113,13 @@ def main():
             time.sleep(1)  # 1초 대기
 
     except KeyboardInterrupt:
-        print("프로그램 종료 중...")
+        print("The end")
+        
+    finally:
+        # mjpeg_server_2.py 종료
+        print("mjpeg_server_2.py exiting")
+        mjpeg_server_proc.terminate()
+        mjpeg_server_proc.wait()  # 프로세스가 종료될 때까지 대기
         GPIO.cleanup()
 
 if __name__ == '__main__':
