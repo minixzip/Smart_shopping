@@ -69,7 +69,8 @@ def main():
     
     # mjpeg_server_2.py 실행
     print("mjpeg_server_2.py loading...")
-    mjpeg_server_proc = subprocess.Popen(["python", "/home/khung/mjpeg_server_2.py"])
+    mjpeg_server_proc = subprocess.Popen(["x-terminal-emulator", "-e", "python /home/khung/mjpeg_server_2.py"],
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     try:
         while True:
