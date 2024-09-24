@@ -28,12 +28,6 @@ function getProduct($conn, $item_num) {
     return $res_row;
 }
 
-// item_num에 따라 해당하는 행의 마지막 열을 세 번째 열의 값만큼 증가시키는 함수
-function incrementLastColumn($conn, $item_num, $incrementValue) {
-    // item_num에 해당하는 행의 마지막 열을 incrementValue만큼 증가시키는 쿼리
-    $updateSql = "UPDATE item SET count = count + $incrementValue WHERE NUMBER = $item_num";
-    mysqli_query($conn, $updateSql);
-}
 
 // CSV 파일에서 첫 번째 열의 값이 5인 행을 찾아 2번째, 3번째 열 값을 불러오고, item_num 값을 조건에 따라 설정하는 함수
 function getSpecificRows($file) {
@@ -94,9 +88,6 @@ function processCSV($file, $conn) {
                 if ($item_num !== null) {
                     $product = getProduct($conn, $item_num);
                     
-                    // 세 번째 열의 값만큼 마지막 열을 증가
-                    $incrementValue = (int)$data[2]; // 세 번째 열의 값을 정수로 변환
-                    incrementLastColumn($conn, $item_num, $incrementValue);
                     
                     // 불러온 상품 정보를 배열에 추가
                     if (!empty($product)) {
