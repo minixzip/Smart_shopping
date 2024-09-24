@@ -112,7 +112,7 @@ function processCSV($file, $conn) {
 
 // 서버 내 경로에 있는 CSV 파일을 불러오는 코드
 $csvFilePath = "/home/khung/yolov5/runs/detect/exp"; // 경로 설정 (절대 경로 사용)
-$csvFileName = "cart_items.csv"; // 파일 이름 설정
+$csvFileName = "predictions.csv"; // 파일 이름 설정
 $csvFileFullPath = $csvFilePath . '/' . $csvFileName; // 파일 전체 경로 생성
 
 // echo $csvFileFullPath;
