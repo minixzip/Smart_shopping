@@ -1,4 +1,7 @@
 <h1 align="center">스마트 쇼핑카트</h1>
+
+> 🏆 제 41회 KSACS 2024 추계학술대회 우수논문상 수상
+
 <br>
 <p align="center">
   <a href="https://github.com/abhishekapk/SMART-PARKING-SYSTEM">
